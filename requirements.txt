@@ -1,3 +1,5 @@
 fastapi
 pydantic
 gitpython
+faiss-cpu
+openai
