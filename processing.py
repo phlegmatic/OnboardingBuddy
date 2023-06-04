@@ -7,11 +7,10 @@ from indexing import indexing
 
 class ProcessCode:
     def __init__(self, ignoreFiles: list, process_dir: str) -> None:
-        openai.api_key = ""
+        openai.api_key = "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"
         self.inference_dir = "./process_files/"
         self.indexer = indexing()
-        self.prompt = """Explain this code to me:
-        """
+        self.prompt = """Explain this code to me:"""
         self.dirIgnore = set(ignoreFiles)
         pass
 

@@ -6,7 +6,7 @@ from retrieval import single_emb_search
 class ProcessQuery:
     def __init__(self) -> None:
         self.indexer = indexing()
-        openai.api_key = ""
+        openai.api_key = "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"
         pass
 
     def process(self, input: str, repoName: str, repoAddress: str) -> str:
@@ -34,6 +34,3 @@ class ProcessQuery:
         finalResponse = completion.choices[0].message["content"]
 
         return finalResponse
-
-
-

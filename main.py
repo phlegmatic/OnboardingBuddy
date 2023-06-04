@@ -16,7 +16,8 @@ class RepoRequest(BaseModel):
 
 
 class PromptRequest(BaseModel):
-    prompt: str
+    repo: str
+    query: str
 
 
 app = FastAPI()
@@ -25,23 +26,30 @@ app = FastAPI()
 def download_repo(repo_url: str):
     repo_name = repo_url.split("/")[-1].replace(".git", "")
     subprocess.run(["git", "clone", repo_url, repo_name])
+    folder_name = "process_files"
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
+        print(f"Folder '{folder_name}' created successfully.")
+    else:
+        print(f"Folder '{folder_name}' already exists.")
     ProcessCode(
-        "/home/sashetye2001/mumhack/OnboardingBuddy/Sorting-Algorithms/",
-        ["process_files"],
-    ).processRepo("/home/sashetye2001/mumhack/OnboardingBuddy/Sorting-Algorithms/")
+        f"/home/sashetye2001/mumhack/OnboardingBuddy/{repo_name}/",
+        [f"{folder_name}"],
+    ).processRepo(f"/home/sashetye2001/mumhack/OnboardingBuddy/{repo_name}/")
+    return repo_name
 
 
 @app.post("/download_repo")
 async def download_repo_endpoint(git_url: RepoRequest):
-    download_repo(git_url.repo_url)
-    return {"message": "Repository processed"}
+    repo_name = download_repo(git_url.repo_url)
+    return {"message": repo_name}
 
 
 @app.post("/chat_with_repo")
 async def chat_repo_endpoint(prompt: PromptRequest):
     output = ProcessQuery().process(
-        "Give ELI5 version of  all algorithms in repository ",
-        "Sorting-Algorithms",
-        "/home/sashetye2001/mumhack/OnboardingBuddy/Sorting-Algorithms/",
+        prompt.query,
+        prompt.repo,
+        f"/home/sashetye2001/mumhack/OnboardingBuddy/{prompt.repo}/",
     )
     return {"answer": output}
