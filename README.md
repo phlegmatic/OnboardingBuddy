@@ -1,2 +1,2 @@
 # CodeHelper
-Code UNderstanding and Troubleshooting Assistant
+Code UNderstanding Assistant
